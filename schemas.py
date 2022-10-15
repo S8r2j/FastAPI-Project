@@ -21,3 +21,6 @@ class InputTeamDetails(SQLModel, table=True):
 
 
 
+
+
+
