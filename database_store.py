@@ -1,20 +1,10 @@
 from fastapi import FastAPI, Depends, HTTPException
-from sqlmodel import create_engine, SQLModel, Session, select
+from sqlmodel import SQLModel, Session, select
 
+from dbconnect import get_session, engine
 from schemas import InputEmpDetails, InputTeamDetails
 
 app=FastAPI()
-
-engine=create_engine(
-    "sqlite:///database.db",
-    connect_args={"check_same_thread": False},
-    echo=True
-)
-
-
-def get_session():
-    with Session(engine) as session:
-        yield session
 
 
 @app.on_event("startup")
@@ -48,7 +38,7 @@ def search_all_data(session:Session=Depends(get_session))->list[InputEmpDetails]
     return session.exec(query).all()
 
 @app.get("/search/employee/id")
-def search_employe(id:str,session: Session=Depends(get_session))->list[InputEmpDetails]:
+def search_employe(id:str, session: Session=Depends(get_session))->list[InputEmpDetails]:
     query=select(InputEmpDetails)
     if id:
         query=query.where(InputEmpDetails.employee_id==id)
