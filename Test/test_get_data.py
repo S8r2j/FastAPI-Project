@@ -1,7 +1,8 @@
 from fastapi.testclient import TestClient
 from unittest.mock import Mock
 
-from database_store import app,get_data
+from database_store import app
+from routers.database_operation import get_data
 from schemas import InputEmpDetails
 
 client= TestClient(app)
